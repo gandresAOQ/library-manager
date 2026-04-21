@@ -23,7 +23,6 @@ public class BookingService implements IService {
         log.debug("[{}] get all bookings", uuid);
         return bookingRepository.get(uuid)
                 .onItem().transform(res -> new JsonObject()
-                        .put("status", res.getStatus())
                         .put("payload", res.getPayload()));
     }
 
@@ -32,7 +31,6 @@ public class BookingService implements IService {
         log.debug("[{}] get booking id={}", uuid, id);
         return bookingRepository.get(uuid, id)
                 .onItem().transform(res -> new JsonObject()
-                        .put("status", res.getStatus())
                         .put("payload", res.getPayload()));
     }
 
@@ -41,7 +39,6 @@ public class BookingService implements IService {
         log.debug("[{}] post booking", uuid);
         return bookingRepository.post(uuid, BookModel.toBookModel(body))
                 .onItem().transform(res -> new JsonObject()
-                        .put("status", res.getStatus())
                         .put("payload", res.getPayload()));
     }
 
@@ -50,7 +47,6 @@ public class BookingService implements IService {
         log.debug("[{}] put booking id={}", uuid, id);
         return bookingRepository.put(uuid, id, BookModel.toBookModel(body))
                 .onItem().transform(res -> new JsonObject()
-                        .put("status", res.getStatus())
                         .put("payload", res.getPayload()));
     }
 
@@ -59,7 +55,6 @@ public class BookingService implements IService {
         log.debug("[{}] delete booking id={}", uuid, id);
         return bookingRepository.delete(uuid, id)
                 .onItem().transform(res -> new JsonObject()
-                        .put("status", res.getStatus())
                         .put("payload", res.getPayload()));
     }
 }

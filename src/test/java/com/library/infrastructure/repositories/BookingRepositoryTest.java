@@ -51,7 +51,7 @@ class BookingRepositoryTest {
 
     @Test
     void get_shouldCallGetAllWithCorrectRequest() {
-        fakeService.nextGetAllResponse = Booking.BookingResponse.newBuilder().setStatus(200).setPayload("all").build();
+        fakeService.nextGetAllResponse = Booking.BookingResponse.newBuilder().setPayload("all").build();
 
         Booking.BookingResponse result = repository.get("uuid-1").await().indefinitely();
 
@@ -62,7 +62,7 @@ class BookingRepositoryTest {
 
     @Test
     void getById_shouldCallGetWithCorrectRequest() {
-        fakeService.nextGetResponse = Booking.BookingResponse.newBuilder().setStatus(200).setPayload("one").build();
+        fakeService.nextGetResponse = Booking.BookingResponse.newBuilder().setPayload("one").build();
 
         Booking.BookingResponse result = repository.get("uuid-1", "book-1").await().indefinitely();
 
@@ -73,10 +73,10 @@ class BookingRepositoryTest {
 
     @Test
     void post_shouldCallPostWithAllFieldsMapped() {
-        fakeService.nextPostResponse = Booking.BookingResponse.newBuilder().setStatus(201).build();
+        fakeService.nextPostResponse = Booking.BookingResponse.newBuilder().build();
         BookModel body = BookModel.builder()
                 .id("b-1").name("Clean Code").author("Robert Martin")
-                .price("25.00").language("English").pages("431").format("Hardcover")
+                .price(25.00).language(Booking.BookLanguage.ENGLISH).pages(431).format(Booking.BookFormat.HARDCOVER)
                 .build();
 
         Booking.BookingResponse result = repository.post("uuid-1", body).await().indefinitely();
@@ -87,18 +87,18 @@ class BookingRepositoryTest {
         assertEquals("b-1", req.getId());
         assertEquals("Clean Code", req.getName());
         assertEquals("Robert Martin", req.getAuthor());
-        assertEquals("25.00", req.getPrice());
-        assertEquals("English", req.getLanguage());
-        assertEquals("431", req.getPages());
-        assertEquals("Hardcover", req.getFormat());
+        assertEquals(25.00, req.getPrice());
+        assertEquals(Booking.BookLanguage.ENGLISH, req.getLanguage());
+        assertEquals(431, req.getPages());
+        assertEquals(Booking.BookFormat.HARDCOVER, req.getFormat());
     }
 
     @Test
     void put_shouldUsePathIdOverridingBodyId() {
-        fakeService.nextPutResponse = Booking.BookingResponse.newBuilder().setStatus(200).build();
+        fakeService.nextPutResponse = Booking.BookingResponse.newBuilder().build();
         BookModel body = BookModel.builder()
                 .id("ignored").name("Refactoring").author("Martin Fowler")
-                .price("30.00").language("English").pages("448").format("Paperback")
+                .price(30.00).language(Booking.BookLanguage.ENGLISH).pages(448).format(Booking.BookFormat.PAPERBACK)
                 .build();
 
         Booking.BookingResponse result = repository.put("uuid-1", "path-id", body).await().indefinitely();
@@ -113,7 +113,7 @@ class BookingRepositoryTest {
 
     @Test
     void delete_shouldCallDeleteWithCorrectRequest() {
-        fakeService.nextDeleteResponse = Booking.BookingResponse.newBuilder().setStatus(204).build();
+        fakeService.nextDeleteResponse = Booking.BookingResponse.newBuilder().build();
 
         Booking.BookingResponse result = repository.delete("uuid-1", "book-1").await().indefinitely();
 
