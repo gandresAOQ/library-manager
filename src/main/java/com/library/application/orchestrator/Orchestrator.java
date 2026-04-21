@@ -10,9 +10,11 @@ import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.inject.literal.NamedLiteral;
 import jakarta.inject.Inject;
 import io.vertx.core.json.JsonObject;
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.resteasy.reactive.RestResponse;
 
+@Slf4j
 @ApplicationScoped
 public class Orchestrator implements IOrchestrator {
 
@@ -29,9 +31,12 @@ public class Orchestrator implements IOrchestrator {
         String domain = splitPath[0].toUpperCase();
         String id = splitPath.length > 1 ? splitPath[1] : null;
 
+        log.info("[{}] execute {} domain={} id={}", uuid, method, domain, id);
+
         IService service = services.select(NamedLiteral.of(domain)).get();
 
         if ((method.equals("PUT") || method.equals("DELETE")) && id == null) {
+            log.warn("[{}] {} on domain={} rejected: missing ID", uuid, method, domain);
             throwException(method);
         }
 
