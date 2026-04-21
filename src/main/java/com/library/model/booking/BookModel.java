@@ -21,15 +21,16 @@ public class BookModel {
     private String format;
 
     public static BookModel toBookModel(JsonObject body) {
+        System.out.println(body.toString());
         return BookModel
                 .builder()
                 .id(body.getString("id"))
                 .name(body.getString("name"))
-                .name(body.getString("author"))
-                .name(body.getString("price"))
-                .name(body.getString("language"))
-                .name(body.getString("pages"))
-                .name(body.getString("format"))
+                .author(body.getString("author"))
+                .price(body.getString("price"))
+                .language(body.getString("language"))
+                .pages(body.getString("pages"))
+                .format(body.getString("format"))
                 .build();
     }
 

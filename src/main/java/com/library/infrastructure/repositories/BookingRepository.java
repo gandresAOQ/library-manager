@@ -7,8 +7,9 @@ import com.library.model.booking.BookModel;
 import io.quarkus.grpc.GrpcClient;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @ApplicationScoped
 public class BookingRepository implements IBookingRepository {
 
@@ -17,6 +18,7 @@ public class BookingRepository implements IBookingRepository {
 
     @Override
     public Uni<Booking.BookingResponse> get(String uuid) {
+        log.debug("[{}] gRPC getAll page=0", uuid);
         return client.getAll(Booking.BookingRequestPaged.newBuilder()
                 .setUuid(uuid)
                 .setPage("0")
@@ -25,6 +27,7 @@ public class BookingRepository implements IBookingRepository {
 
     @Override
     public Uni<Booking.BookingResponse> get(String uuid, String id) {
+        log.debug("[{}] gRPC get id={}", uuid, id);
         return client.get(Booking.BookingRequestId.newBuilder()
                 .setUuid(uuid)
                 .setId(id)
@@ -33,6 +36,7 @@ public class BookingRepository implements IBookingRepository {
 
     @Override
     public Uni<Booking.BookingResponse> post(String uuid, BookModel body) {
+        log.debug("[{}] gRPC post name={}", uuid, body.getName());
         return client.post(Booking.BookingRequest.newBuilder()
                 .setUuid(uuid)
                 .setName(body.getName())
@@ -47,7 +51,8 @@ public class BookingRepository implements IBookingRepository {
 
     @Override
     public Uni<Booking.BookingResponse> put(String uuid, String id, BookModel body) {
-        return client.post(Booking.BookingRequest.newBuilder()
+        log.debug("[{}] gRPC put id={}", uuid, id);
+        return client.put(Booking.BookingRequest.newBuilder()
                 .setUuid(uuid)
                 .setName(body.getName())
                 .setId(id)
@@ -61,6 +66,7 @@ public class BookingRepository implements IBookingRepository {
 
     @Override
     public Uni<Booking.BookingResponse> delete(String uuid, String id) {
+        log.debug("[{}] gRPC delete id={}", uuid, id);
         return client.delete(Booking.BookingRequestId.newBuilder()
                 .setUuid(uuid)
                 .setId(id)
