@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.library</groupId>
     <artifactId>library-manager</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 
     <properties>
         <compiler-plugin.version>3.15.0</compiler-plugin.version>
@@ -138,6 +138,13 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco-plugin.version}</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/grpc/*</exclude>
+                        <exclude>**/com/library/model/*</exclude>
+                        <exclude>**/com/library/model/errors/*</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <id>jacoco-report</id>
