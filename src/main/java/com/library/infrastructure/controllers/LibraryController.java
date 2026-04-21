@@ -2,6 +2,7 @@ package com.library.infrastructure.controllers;
 
 import com.library.application.ports.IOrchestrator;
 import com.library.infrastructure.contracts.ILibraryController;
+import com.library.utils.BodyValidator;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -50,6 +51,7 @@ public class LibraryController implements ILibraryController {
     @POST
     @Path("{path: .+}")
     public Uni<Response> post(HttpHeaders httpHeaders, JsonObject requestBody, @PathParam("path") String path) {
+        BodyValidator.validateRequestBody("POST", requestBody);
         String uuid = httpHeaders.getHeaderString(UUID_HEADER);
         log.info("[{}] POST {}", uuid, path);
         return orchestrator.execute(uuid, requestBody, path, "POST")
@@ -64,6 +66,7 @@ public class LibraryController implements ILibraryController {
     @PUT
     @Path("{path: .+}")
     public Uni<Response> put(HttpHeaders httpHeaders, JsonObject requestBody, @PathParam("path") String path) {
+        BodyValidator.validateRequestBody("PUT", requestBody);
         String uuid = httpHeaders.getHeaderString(UUID_HEADER);
         log.info("[{}] PUT {}", uuid, path);
         return orchestrator.execute(uuid, requestBody, path, "PUT")

@@ -1,5 +1,6 @@
 package com.library.model.booking;
 
+import com.booking.grpc.Booking;
 import io.vertx.core.json.JsonObject;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,10 +16,10 @@ public class BookModel {
     private String id;
     private String name;
     private String author;
-    private String price;
-    private String language;
-    private String pages;
-    private String format;
+    private Double price;
+    private Booking.BookLanguage language;
+    private int pages;
+    private Booking.BookFormat format;
 
     public static BookModel toBookModel(JsonObject body) {
         System.out.println(body.toString());
@@ -27,10 +28,10 @@ public class BookModel {
                 .id(body.getString("id"))
                 .name(body.getString("name"))
                 .author(body.getString("author"))
-                .price(body.getString("price"))
-                .language(body.getString("language"))
-                .pages(body.getString("pages"))
-                .format(body.getString("format"))
+                .price(body.getDouble("price"))
+                .language(Booking.BookLanguage.valueOf(body.getString("language")))
+                .pages(body.getInteger("pages"))
+                .format(Booking.BookFormat.valueOf(body.getString("format")))
                 .build();
     }
 

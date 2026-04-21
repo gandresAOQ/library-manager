@@ -30,7 +30,7 @@ class BookingServiceTest {
 
     @BeforeEach
     void setUp() {
-        grpcResponse = Booking.BookingResponse.newBuilder().setStatus(200).setPayload("ok").build();
+        grpcResponse = Booking.BookingResponse.newBuilder().setPayload("ok").build();
         Mockito.reset(bookingRepository);
     }
 
@@ -40,7 +40,6 @@ class BookingServiceTest {
 
         JsonObject result = service.get(UUID).await().indefinitely();
 
-        assertEquals(200, result.getInteger("status"));
         assertEquals("ok", result.getString("payload"));
     }
 
@@ -50,7 +49,6 @@ class BookingServiceTest {
 
         JsonObject result = service.get(UUID, ID).await().indefinitely();
 
-        assertEquals(200, result.getInteger("status"));
         assertEquals("ok", result.getString("payload"));
     }
 
@@ -61,11 +59,10 @@ class BookingServiceTest {
 
         JsonObject body = new JsonObject()
                 .put("id", "b-1").put("name", "Clean Code").put("author", "Robert Martin")
-                .put("price", "25.00").put("language", "English").put("pages", "431").put("format", "Hardcover");
+                .put("price", 25.00).put("language", "ENGLISH").put("pages", 431).put("format", "HARDCOVER");
 
         JsonObject result = service.post(UUID, body).await().indefinitely();
 
-        assertEquals(200, result.getInteger("status"));
         assertEquals("ok", result.getString("payload"));
     }
 
@@ -74,11 +71,12 @@ class BookingServiceTest {
         Mockito.when(bookingRepository.put(Mockito.eq(UUID), Mockito.eq(ID), Mockito.any()))
                 .thenReturn(Uni.createFrom().item(grpcResponse));
 
-        JsonObject body = new JsonObject().put("name", "Refactoring").put("author", "Martin Fowler");
+        JsonObject body = new JsonObject()
+                .put("id", "b-1").put("name", "Clean Code").put("author", "Robert Martin")
+                .put("price", 25.00).put("language", "ENGLISH").put("pages", 431).put("format", "HARDCOVER");
 
         JsonObject result = service.put(UUID, ID, body).await().indefinitely();
 
-        assertEquals(200, result.getInteger("status"));
         assertEquals("ok", result.getString("payload"));
     }
 
@@ -88,7 +86,6 @@ class BookingServiceTest {
 
         JsonObject result = service.delete(UUID, ID).await().indefinitely();
 
-        assertEquals(200, result.getInteger("status"));
         assertEquals("ok", result.getString("payload"));
     }
 

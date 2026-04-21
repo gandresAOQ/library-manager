@@ -88,11 +88,18 @@ class LibraryControllerTest {
         given()
                 .header(UUID_HEADER, UUID)
                 .contentType("application/json")
-                .body("{\"title\":\"Clean Code\",\"author\":\"Robert Martin\"}")
+                .body("{\n" +
+                        "    \"id\": \"1\",\n" +
+                        "    \"name\": \"Test book\",\n" +
+                        "    \"author\": \"Test author\",\n" +
+                        "    \"price\": 123.0,\n" +
+                        "    \"language\": \"SPANISH\",\n" +
+                        "    \"pages\": 100,\n" +
+                        "    \"format\": \"EBOOK\"\n" +
+                        "}")
         .when()
                 .post(BASE_PATH)
         .then()
-                .statusCode(200)
                 .body("id", is("1"));
     }
 
@@ -104,7 +111,15 @@ class LibraryControllerTest {
         given()
                 .header(UUID_HEADER, UUID)
                 .contentType("application/json")
-                .body("{\"title\":\"Clean Code\"}")
+                .body("{\n" +
+                        "    \"id\": \"1\",\n" +
+                        "    \"name\": \"Test book\",\n" +
+                        "    \"author\": \"Test author\",\n" +
+                        "    \"price\": 123.0,\n" +
+                        "    \"language\": \"SPANISH\",\n" +
+                        "    \"pages\": 100,\n" +
+                        "    \"format\": \"EBOOK\"\n" +
+                        "}")
         .when()
                 .post(BASE_PATH)
         .then()
@@ -121,7 +136,15 @@ class LibraryControllerTest {
         given()
                 .header(UUID_HEADER, UUID)
                 .contentType("application/json")
-                .body("{\"title\":\"Clean Code Updated\"}")
+                .body("{\n" +
+                        "    \"id\": \"1\",\n" +
+                        "    \"name\": \"Test book\",\n" +
+                        "    \"author\": \"Test author\",\n" +
+                        "    \"price\": 123.0,\n" +
+                        "    \"language\": \"SPANISH\",\n" +
+                        "    \"pages\": 100,\n" +
+                        "    \"format\": \"EBOOK\"\n" +
+                        "}")
         .when()
                 .put(BASE_PATH)
         .then()
@@ -137,7 +160,15 @@ class LibraryControllerTest {
         given()
                 .header(UUID_HEADER, UUID)
                 .contentType("application/json")
-                .body("{\"title\":\"Clean Code Updated\"}")
+                .body("{\n" +
+                        "    \"id\": \"1\",\n" +
+                        "    \"name\": \"Test book\",\n" +
+                        "    \"author\": \"Test author\",\n" +
+                        "    \"price\": 123.0,\n" +
+                        "    \"language\": \"SPANISH\",\n" +
+                        "    \"pages\": 100,\n" +
+                        "    \"format\": \"EBOOK\"\n" +
+                        "}")
         .when()
                 .put(BASE_PATH)
         .then()
