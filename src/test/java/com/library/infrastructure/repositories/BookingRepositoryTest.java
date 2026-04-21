@@ -95,7 +95,7 @@ class BookingRepositoryTest {
 
     @Test
     void put_shouldUsePathIdOverridingBodyId() {
-        fakeService.nextPostResponse = Booking.BookingResponse.newBuilder().setStatus(200).build();
+        fakeService.nextPutResponse = Booking.BookingResponse.newBuilder().setStatus(200).build();
         BookModel body = BookModel.builder()
                 .id("ignored").name("Refactoring").author("Martin Fowler")
                 .price("30.00").language("English").pages("448").format("Paperback")
@@ -103,8 +103,8 @@ class BookingRepositoryTest {
 
         Booking.BookingResponse result = repository.put("uuid-1", "path-id", body).await().indefinitely();
 
-        assertEquals(fakeService.nextPostResponse, result);
-        Booking.BookingRequest req = fakeService.capturedPostRequest;
+        assertEquals(fakeService.nextPutResponse, result);
+        Booking.BookingRequest req = fakeService.capturedPutRequest;
         assertEquals("uuid-1", req.getUuid());
         assertEquals("path-id", req.getId());
         assertEquals("Refactoring", req.getName());
@@ -127,11 +127,13 @@ class BookingRepositoryTest {
         Booking.BookingRequestPaged capturedGetAllRequest;
         Booking.BookingRequestId capturedGetRequest;
         Booking.BookingRequest capturedPostRequest;
+        Booking.BookingRequest capturedPutRequest;
         Booking.BookingRequestId capturedDeleteRequest;
 
         Booking.BookingResponse nextGetAllResponse;
         Booking.BookingResponse nextGetResponse;
         Booking.BookingResponse nextPostResponse;
+        Booking.BookingResponse nextPutResponse;
         Booking.BookingResponse nextDeleteResponse;
 
         @Override
@@ -150,6 +152,12 @@ class BookingRepositoryTest {
         public Uni<Booking.BookingResponse> post(Booking.BookingRequest request) {
             capturedPostRequest = request;
             return Uni.createFrom().item(nextPostResponse);
+        }
+
+        @Override
+        public Uni<Booking.BookingResponse> put(Booking.BookingRequest request) {
+            capturedPutRequest = request;
+            return Uni.createFrom().item(nextPutResponse);
         }
 
         @Override
